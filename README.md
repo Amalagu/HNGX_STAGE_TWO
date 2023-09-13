@@ -46,7 +46,7 @@ Database Schema : `/api/schema`
 
 API Documentation : `/api/docs`
 
-API Live Link :
+API Live Link : `https://adorno.pythonanywhere.com/api/`
 
 #
 
