@@ -21,12 +21,14 @@ class PersonAPITest(TestCase):
             "address": "Address123"  # Invalid address
         }
         self.valid_person = Person.objects.create(**self.valid_person_data)
+    # test to create valid person instance
 
     def test_create_valid_person(self):
         response = self.client.post(
             '/api/', self.valid_person_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+    # test that attempts to create an instance using invalid user data
     def test_create_invalid_person(self):
         response = self.client.post(
             '/api/', self.invalid_person_data, format='json')
@@ -37,10 +39,17 @@ class PersonAPITest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
-    def test_get_person_detail(self):
+    def test_get_person_detail_with_id(self):
         response = self.client.get(f'/api/{self.valid_person.id}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["fullname"], "John Doe")
+
+    def test_get_person_detail_with_fullname(self):
+        response = self.client.get(
+            f'/api/?fullname={self.valid_person.fullname}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        print(response.data)
+        self.assertEqual(response.data[0]["fullname"], "John Doe")
 
     def test_update_person(self):
         updated_data = self.valid_person_data
